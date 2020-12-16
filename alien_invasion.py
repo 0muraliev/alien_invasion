@@ -67,9 +67,9 @@ class AlienInvasion:
         """Запускает новую игру при нажатии кнопки Play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
-            # Сброс игровой статистики.
+            # Сброс игровой статистики и начало новой.
             self.stats.reset_stats()
-            self.stats.game_active = True
+            self._start_game()
 
             # Очистка списков пришельцев и снарядов.
             self.aliens.empty()
@@ -78,6 +78,11 @@ class AlienInvasion:
             # Создание нового флота и размещение корабля в центре.
             self._create_fleet()
             self.ship.center_ship()
+
+    def _start_game(self):
+        """Начинает игру и скрывает курсор мыши."""
+        self.stats.game_active = True
+        pygame.mouse.set_visible(False)
 
     def _check_keydown_events(self, event):
         """Реагирует на нажатие клавиш."""
@@ -91,6 +96,8 @@ class AlienInvasion:
             self.ship.moving_down = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_p:
+            self._start_game()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
 
@@ -124,7 +131,7 @@ class AlienInvasion:
     def _check_bullet_alien_collisions(self):
         """Обнаружение коллизий снарядов с пришельцами."""
         # Удаление снарядов и пришельцев, участвующий в коллизиях.
-        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
         if not self.aliens:
             # Уничтожение существующий снарядов и создание нового флота.
@@ -160,6 +167,8 @@ class AlienInvasion:
             sleep(1)
         else:
             self.stats.game_active = False
+            self.stats.ships_left = 3
+            pygame.mouse.set_visible(True)
 
     def _check_aliens_bottom(self):
         """Проверяет, добрались ли пришельцы до нижнего края экрана."""
