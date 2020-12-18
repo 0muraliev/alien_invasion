@@ -101,7 +101,7 @@ class AlienInvasion:
             sys.exit()
         elif event.key == pygame.K_p:
             self._start_game()
-        elif event.key == pygame.K_SPACE:
+        elif event.key == pygame.K_SPACE and self.stats.game_active:
             self._fire_bullet()
 
     def _check_keyup_events(self, event):
@@ -172,6 +172,7 @@ class AlienInvasion:
         else:
             self.stats.game_active = False
             self.stats.ships_left = 3
+            self.settings.initialize_dynamic_settings()
             pygame.mouse.set_visible(True)
 
     def _check_aliens_bottom(self):
