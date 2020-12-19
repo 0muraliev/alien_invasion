@@ -130,7 +130,8 @@ class AlienInvasion:
 
     def _check_bullet_target_collisions(self):
         """Обнаружение коллизий снарядов с мишенью."""
-        pygame.sprite.spritecollide(self.target, self.bullets, True)
+        if pygame.sprite.spritecollide(self.target, self.bullets, True):
+            self.target.increase_distance()
 
     def _bullets_limit(self):
         self.stats.game_active = False

@@ -35,3 +35,8 @@ class Target:
     def start_position_target(self):
         self.rect.center = self.screen_rect.center
         self.y = float(self.rect.y)
+
+    def increase_distance(self):
+        """Увеличивает дальность мишени."""
+        if (self.rect.x * 1.1) < self.screen_rect.right:
+            self.rect.x *= 1.1
