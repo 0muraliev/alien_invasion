@@ -1,3 +1,4 @@
+import random
 import sys
 from time import sleep
 
@@ -132,6 +133,11 @@ class AlienInvasion:
         if pygame.sprite.spritecollide(self.target, self.bullets, True):
             self.target.increase_distance()
             self.stats.bullets_left += 2
+
+            # Меняет цвет мишени на случайное
+            def r(): return random.randint(0, 255)
+
+            self.target.color = r(), r(), r()
 
     def _bullets_limit(self):
         self.stats.game_active = False
