@@ -10,7 +10,6 @@ class Button:
 
         # Назначение размеров и свойств кнопок.
         self.width, self.height = 200, 50
-        self.button_color = (0, 255, 0)
         self.text_color = (255, 255, 255)
         self.font = pygame.font.SysFont(None, 48)
 
@@ -23,11 +22,10 @@ class Button:
 
     def _prep_msg(self, msg):
         """Преобразует msg в прямоугольник и выравнивает текст по центру."""
-        self.msg_image = self.font.render(msg, True, self.text_color, self.button_color)
+        self.msg_image = self.font.render(msg, True, self.text_color)
         self.msg_image_rect = self.msg_image.get_rect()
         self.msg_image_rect.center = self.rect.center
 
     def draw_button(self):
-        # Отображение пустой кнопки и вывод текста.
-        self.screen.fill(self.button_color, self.rect)
+        # Вывод текста.
         self.screen.blit(self.msg_image, self.msg_image_rect)
