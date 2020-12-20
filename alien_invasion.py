@@ -1,13 +1,14 @@
 import sys
+from time import sleep
 
 import pygame
 
-from game_stats import GameStats
-from target import Target
 from bullet import Bullet
 from button import Button
+from game_stats import GameStats
 from settings import Settings
 from ship import Ship
+from target import Target
 
 
 class AlienInvasion:
@@ -97,7 +98,9 @@ class AlienInvasion:
             self.bullets.add(new_bullet)
             self.stats.bullets_left -= 1
         else:
-            self._bullets_limit()
+            if not self.bullets:
+                sleep(0.5)
+                self._bullets_limit()
 
     def _update_bullets(self):
         """Обновляет позиции снарядов и уничтожает старые снаряды."""
