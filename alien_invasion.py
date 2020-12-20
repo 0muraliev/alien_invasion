@@ -72,8 +72,7 @@ class AlienInvasion:
             # Сброс игровых настроек.
             self.settings.initialize_dynamic_settings()
 
-            # Сброс игровой статистики и начало новой.
-            self.stats.reset_stats()
+            # Начинает новую игру.
             self._start_game()
 
             # Очистка списков пришельцев и снарядов.
@@ -85,26 +84,29 @@ class AlienInvasion:
             self.ship.center_ship()
 
     def _start_game(self):
-        """Начинает игру и скрывает курсор мыши."""
+        """Сбрасывает статистику, начинает игру и скрывает курсор мыши."""
+        self.stats.reset_stats()
         self.stats.game_active = True
+        self.sb.prep_score()
         pygame.mouse.set_visible(False)
 
     def _check_keydown_events(self, event):
         """Реагирует на нажатие клавиш."""
-        if event.key == pygame.K_RIGHT:
-            self.ship.moving_right = True
-        elif event.key == pygame.K_LEFT:
-            self.ship.moving_left = True
-        elif event.key == pygame.K_UP:
-            self.ship.moving_up = True
-        elif event.key == pygame.K_DOWN:
-            self.ship.moving_down = True
-        elif event.key == pygame.K_q:
-            sys.exit()
+        if self.stats.game_active:
+            if event.key == pygame.K_RIGHT:
+                self.ship.moving_right = True
+            elif event.key == pygame.K_LEFT:
+                self.ship.moving_left = True
+            elif event.key == pygame.K_UP:
+                self.ship.moving_up = True
+            elif event.key == pygame.K_DOWN:
+                self.ship.moving_down = True
+            elif event.key == pygame.K_SPACE:
+                self._fire_bullet()
         elif event.key == pygame.K_p:
             self._start_game()
-        elif event.key == pygame.K_SPACE and self.stats.game_active:
-            self._fire_bullet()
+        if event.key == pygame.K_q:
+            sys.exit()
 
     def _check_keyup_events(self, event):
         """Реагирует на отпускание клавиш."""
@@ -176,7 +178,6 @@ class AlienInvasion:
             sleep(1)
         else:
             self.stats.game_active = False
-            self.stats.ships_left = 3
             self.settings.initialize_dynamic_settings()
             pygame.mouse.set_visible(True)
 
