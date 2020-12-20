@@ -17,9 +17,10 @@ class Settings:
         self.bullets_allowed = 5
 
         # Параметры мишени
+        self.distance_times = 1.1
         self.target_speed = 0.5
         self.target_width = 5
         self.target_height = 30
-        self.target_color = (152, 83, 34)
+        self.target_color = (251, 183, 221)
         # 1 обозначает движение вверх; а -1 - вниз.
         self.target_direction = 1

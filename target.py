@@ -10,6 +10,7 @@ class Target:
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
         self.color = self.settings.target_color
+        self.dist_times = self.settings.distance_times
 
         # Отрисовка мишени и назначение атрибута rect.
         self.rect = pygame.Rect(0, 0, self.settings.target_width, self.settings.target_height)
@@ -38,5 +39,5 @@ class Target:
 
     def increase_distance(self):
         """Увеличивает дальность мишени."""
-        if (self.rect.x * 1.1) < self.screen_rect.right:
-            self.rect.x *= 1.1
+        if (self.rect.x * self.dist_times) < self.screen_rect.right:
+            self.rect.x *= self.dist_times

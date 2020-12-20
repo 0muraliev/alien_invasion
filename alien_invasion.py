@@ -97,18 +97,17 @@ class AlienInvasion:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
             self.stats.bullets_left -= 1
-        else:
-            if not self.bullets:
-                sleep(0.5)
-                self._bullets_limit()
 
     def _update_bullets(self):
         """Обновляет позиции снарядов и уничтожает старые снаряды."""
         self.bullets.update()
 
         for bullet in self.bullets:
-            if bullet.rect.right >= self.screen.get_rect().right:
+            if bullet.rect.left > self.screen.get_rect().right:
                 self.bullets.remove(bullet)
+            if not self.bullets:
+                sleep(0.5)
+                self._bullets_limit()
         self._check_bullet_target_collisions()
 
     def _update_target(self):
@@ -118,9 +117,6 @@ class AlienInvasion:
         """
         self._check_target_edges()
         self.target.update()
-
-        if pygame.sprite.spritecollideany(self.target, self.bullets):
-            self._bullets_limit()
 
     def _check_target_edges(self):
         """Реагирует на достижение мишени края экрана."""
