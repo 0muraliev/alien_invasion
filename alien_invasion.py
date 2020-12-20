@@ -105,8 +105,8 @@ class AlienInvasion:
         for bullet in self.bullets:
             if bullet.rect.left > self.screen.get_rect().right:
                 self.bullets.remove(bullet)
-            if not self.bullets:
-                sleep(0.5)
+            if not self.bullets and not self.stats.bullets_left:
+                sleep(0.8)
                 self._bullets_limit()
         self._check_bullet_target_collisions()
 
