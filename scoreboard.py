@@ -19,7 +19,9 @@ class Scoreboard:
 
     def prep_score(self):
         """Преобразует текущий счет в графическое изображение."""
-        score_str = str(self.stats.score)
+        rounded_score = round(self.stats.score, -1)
+        # Вставляет запятые при преобразовании числового значения в строку
+        score_str = f"{rounded_score:,}"
         self.score_img = self.font.render(score_str, True, self.text_color, self.settings.bg_color)
 
         # Вывод счета в правой верхней части экрана.
