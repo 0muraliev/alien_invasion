@@ -10,7 +10,7 @@ class Settings:
         self.ship_limit = 3
 
         # Параметры снаряда
-        self.bullet_width = 3
+        self.bullet_width = 3000
         self.bullet_height = 15
         self.bullet_color = (240, 40, 40)
         self.bullets_allowed = 3
@@ -20,6 +20,9 @@ class Settings:
 
         # Темп ускорения игры.
         self.speedup_scale = 1.2
+
+        # Темп роста стоимости пришельцев
+        self.score_scale = 1.3
 
         self.initialize_dynamic_settings()
 
@@ -37,7 +40,8 @@ class Settings:
         self.alien_points = 5
 
     def increase_speed(self):
-        """Увеличивает настройки скорости."""
+        """Увеличивает настройки скорости и стоимость пришельцев."""
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
+        self.alien_points = int(self.alien_points * self.score_scale)
