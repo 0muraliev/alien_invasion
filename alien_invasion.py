@@ -89,6 +89,7 @@ class AlienInvasion:
         self.stats.game_active = True
         self.sb.prep_score()
         self.sb.prep_level()
+        self.sb.prep_ships()
         pygame.mouse.set_visible(False)
 
     def _check_keydown_events(self, event):
@@ -173,7 +174,9 @@ class AlienInvasion:
     def _ship_hit(self):
         """Обрабатывает столкновение корабля с пришельцем.."""
         if self.stats.ships_left > 0:
+            # Уменьшение ships_left и обновление панели счета
             self.stats.ships_left -= 1
+            self.sb.prep_ships()
 
             self.aliens.empty()
             self.bullets.empty()
@@ -182,7 +185,7 @@ class AlienInvasion:
             self.ship.center_ship()
             # Пауза
             sleep(1)
-        else:
+        if self.stats.ships_left == 0:
             self.stats.game_active = False
             self.settings.initialize_dynamic_settings()
             pygame.mouse.set_visible(True)
