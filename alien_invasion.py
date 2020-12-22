@@ -38,7 +38,7 @@ class AlienInvasion:
         self._create_fleet()
 
         # Создание кнопки Play.
-        self.play_button = Button(self, 'Play')
+        self.play_button = Button(self, 'New Game')
 
     def run_game(self):
         """Запуск основного цикла игры."""
@@ -56,6 +56,7 @@ class AlienInvasion:
         """Обрабатывает нажатия клавиш и события мыши."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.sb.save_new_record()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
@@ -108,6 +109,7 @@ class AlienInvasion:
         elif event.key == pygame.K_p:
             self._start_game()
         if event.key == pygame.K_q:
+            self.sb.save_new_record()
             sys.exit()
 
     def _check_keyup_events(self, event):
