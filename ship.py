@@ -22,7 +22,10 @@ class Ship(Sprite):
         self.x = float(self.rect.x)
         self.y = float(self.rect.y)
 
-        # Флаг перемещения
+        self._movement_flags()
+
+    def _movement_flags(self):
+        """Флаги перемещения корабля."""
         self.moving_right = False
         self.moving_left = False
         self.moving_up = False

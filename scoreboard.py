@@ -20,7 +20,11 @@ class Scoreboard:
         # Настройки шрифта для вывода счета.
         self.text_color = (200, 200, 200)
         self.font = pygame.font.SysFont(None, 48)
-        # Подготовка изображений счетов.
+        # Подготовка изображений.
+        self.prep_images()
+
+    def prep_images(self):
+        """Подготавливает данные статистики для вывода на экран."""
         self.prep_score()
         self.prep_high_score()
         self.prep_level()
