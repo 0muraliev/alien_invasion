@@ -34,8 +34,10 @@ class Target:
         pygame.draw.rect(self.screen, self.color, self.rect)
 
     def start_position_target(self):
+        """Назначает мишени исходную позицию."""
         self.rect.center = self.screen_rect.center
         self.y = float(self.rect.y)
+        self.color = self.settings.target_color
 
     def increase_distance(self):
         """Увеличивает дальность мишени."""

@@ -21,6 +21,11 @@ class Settings:
         self.target_speed = 0.5
         self.target_width = 5
         self.target_height = 30
-        self.target_color = (251, 183, 221)
+        self.target_color = (255, 255, 255)
+
+        self.initialize_dynamic_settings()
+
+    def initialize_dynamic_settings(self):
+        """Инициализирует настройки, изменяющиеся в ходе игры."""
         # 1 обозначает движение вверх; а -1 - вниз.
         self.target_direction = 1

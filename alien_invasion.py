@@ -68,7 +68,7 @@ class AlienInvasion:
             self._start_game()
 
     def _start_game(self):
-        """Начинает игру и скрывает курсор мыши."""
+        """Сбрасывает статистику, начинает игру и скрывает курсор мыши."""
         self.stats.game_active = True
         pygame.mouse.set_visible(False)
 
@@ -106,9 +106,9 @@ class AlienInvasion:
         for bullet in self.bullets:
             if bullet.rect.left > self.screen.get_rect().right:
                 self.bullets.remove(bullet)
-            if not self.bullets and not self.stats.bullets_left:
-                sleep(0.8)
-                self._bullets_limit()
+                if not self.bullets and not self.stats.bullets_left:
+                    sleep(0.8)
+                    self._bullets_limit()
         self._check_bullet_target_collisions()
 
     def _update_target(self):
@@ -125,6 +125,7 @@ class AlienInvasion:
             self._change_target_direction()
 
     def _change_target_direction(self):
+        """Меняет направление движения мишени."""
         if self.target.check_edges():
             self.settings.target_direction *= -1
 
@@ -140,11 +141,15 @@ class AlienInvasion:
             self.target.color = r(), r(), r()
 
     def _bullets_limit(self):
+        """Переводит игру в неактивную, когда закончатся все снаряды корабля."""
         self.stats.game_active = False
-        self.bullets.empty()
         self.ship.start_position_ship()
         self.target.start_position_target()
+
+        # Сброс игровых статистики и настроек.
         self.stats.reset_stats()
+        self.settings.initialize_dynamic_settings()
+
         pygame.mouse.set_visible(True)
 
     def _update_screen(self):
