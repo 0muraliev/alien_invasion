@@ -27,6 +27,18 @@ class AlienInvasion:
 
         self._create_instances_and_groups()
 
+    def run_game(self):
+        """Запуск основного цикла игры."""
+        while True:
+            self._check_events()
+
+            if self.stats.game_active:
+                self.ship.update()
+                self._update_bullets()
+                self._update_aliens()
+
+            self._update_screen()
+
     def _create_instances_and_groups(self):
         """Создает экземпляры и группы объектов, необходимые для работы игры."""
 
@@ -42,18 +54,6 @@ class AlienInvasion:
         # Создание флота и кнопки для старта игры.
         self._create_fleet()
         self.play_button = Button(self, 'New Game')
-
-    def run_game(self):
-        """Запуск основного цикла игры."""
-        while True:
-            self._check_events()
-
-            if self.stats.game_active:
-                self.ship.update()
-                self._update_bullets()
-                self._update_aliens()
-
-            self._update_screen()
 
     def _check_events(self):
         """Обрабатывает нажатия клавиш и события мыши."""
@@ -73,19 +73,7 @@ class AlienInvasion:
         """Запускает новую игру при нажатии кнопки New Game."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
-            # Сброс игровых настроек.
-            self.settings.initialize_dynamic_settings()
-
-            # Начинает новую игру.
             self._start_game()
-
-            # Очистка списков пришельцев и снарядов.
-            self.aliens.empty()
-            self.bullets.empty()
-
-            # Создание нового флота и размещение корабля в центре.
-            self._create_fleet()
-            self.ship.center_ship()
 
     def _start_game(self):
         """

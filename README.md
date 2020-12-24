@@ -18,7 +18,7 @@ $ git clone https://github.com/0muraliev/alien_invasion.git -b target_shooting
 # Requirements
 The minimum requirement for Alien Invasion is a set of Python modules - pygame for writing video games.
 ```
-$ python -m pip install pygame
+$ python -m pip install pygame==2.0.0
 ```
 # Start
 To start the game, just enter the following line into the command line:
