@@ -4,11 +4,11 @@ import pygame
 class Target:
     """Класс, представляющий мишень."""
 
-    def __init__(self, ai_game):
+    def __init__(self, ts_game):
         """Инициализирует мишень и задает его начальную позицию."""
-        self.screen = ai_game.screen
-        self.settings = ai_game.settings
-        self.screen_rect = ai_game.screen.get_rect()
+        self.screen = ts_game.screen
+        self.settings = ts_game.settings
+        self.screen_rect = ts_game.screen.get_rect()
         self.color = self.settings.target_color
         self.dist_times = self.settings.distance_times
 

@@ -5,16 +5,16 @@ from pygame.sprite import Sprite
 class Bullet(Sprite):
     """Класс для управления снарядами, выпущенными кораблем."""
 
-    def __init__(self, ai_game):
+    def __init__(self, ts_game):
         """Создает объект снарядов в текущей позиции корабля."""
         super().__init__()
-        self.screen = ai_game.screen
-        self.settings = ai_game.settings
+        self.screen = ts_game.screen
+        self.settings = ts_game.settings
         self.color = self.settings.bullet_color
 
         # Создание снаряда в позиции (0,0) и назначение правильной позиции.
         self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)
-        self.rect.midright = ai_game.ship.rect.midright
+        self.rect.midright = ts_game.ship.rect.midright
 
         # Позиция снаряда хранится в вещественном формате.
         self.x = float(self.rect.x)

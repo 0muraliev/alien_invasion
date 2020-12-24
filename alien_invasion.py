@@ -7,12 +7,13 @@ import pygame
 from bullet import Bullet
 from button import Button
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from settings import Settings
 from ship import Ship
 from target import Target
 
 
-class AlienInvasion:
+class TargetShooting:
     """Класс для управления ресурсами и поведением игры."""
 
     def __init__(self):
@@ -23,10 +24,11 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
-        pygame.display.set_caption("Alien Invasion")
+        pygame.display.set_caption("Target Shooting")
 
         # Создание экземпляра для хранения игровой статистики.
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
 
         # Создается экземпляр корабля, мишени и группа снарядов
         self.ship = Ship(self)
@@ -51,6 +53,7 @@ class AlienInvasion:
         """Обрабатывает нажатия клавиш и события мыши."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.sb.save_new_record()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
@@ -69,7 +72,9 @@ class AlienInvasion:
 
     def _start_game(self):
         """Сбрасывает статистику, начинает игру и скрывает курсор мыши."""
+        self.stats.reset_stats()
         self.stats.game_active = True
+        self.sb.prep_images()
         pygame.mouse.set_visible(False)
 
     def _check_keydown_events(self, event):
@@ -79,6 +84,7 @@ class AlienInvasion:
         elif event.key == pygame.K_DOWN:
             self.ship.moving_down = True
         elif event.key == pygame.K_q:
+            self.sb.save_new_record()
             sys.exit()
         elif event.key == pygame.K_p and not self.stats.game_active:
             self._start_game()
@@ -133,7 +139,10 @@ class AlienInvasion:
         """Обнаружение коллизий снарядов с мишенью."""
         if pygame.sprite.spritecollide(self.target, self.bullets, True):
             self.target.increase_distance()
-            self.stats.bullets_left += 2
+            self.stats.bullets_left += 3
+            self.stats.score += self.settings.target_points
+            self.sb.prep_score()
+            self.sb.check_high_score()
 
             # Меняет цвет мишени на случайное
             def r(): return random.randint(0, 255)
@@ -160,6 +169,9 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
 
+        # Вывод информации о счете.
+        self.sb.show_score()
+
         # Кнопка Play отображается в том случае, если игра неактивна.
         if not self.stats.game_active:
             self.play_button.draw_button()
@@ -169,5 +181,5 @@ class AlienInvasion:
 
 if __name__ == '__main__':
     # Создание экземпляра и запуск игры.
-    ai = AlienInvasion()
-    ai.run_game()
+    ts = TargetShooting()
+    ts.run_game()

@@ -4,8 +4,8 @@ import pygame.font
 class Button:
     """Инициализация атрибутов кнопки."""
 
-    def __init__(self, ai_game, msg):
-        self.screen = ai_game.screen
+    def __init__(self, ts_game, msg):
+        self.screen = ts_game.screen
         self.screen_rect = self.screen.get_rect()
 
         # Назначение размеров и свойств кнопок.
