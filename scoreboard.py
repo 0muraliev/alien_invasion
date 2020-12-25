@@ -40,7 +40,7 @@ class Scoreboard:
         """Преобразует рекордный счет в графическое изображение."""
         high_score = self.stats.high_score
         high_score_str = f"{high_score:,}"
-        self.high_score_img = self.font.render('--- ' + high_score_str + ' ---', True, self.text_color)
+        self.high_score_img = self.font.render(f'--- {high_score_str} ---', True, self.text_color)
 
         # Рекорд выравнивается по центру верхней стороны.
         self.high_score_rect = self.high_score_img.get_rect()

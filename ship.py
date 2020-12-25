@@ -19,7 +19,10 @@ class Ship:
         # Сохранение вещественной координаты центра корабля.
         self.y = float(self.rect.y)
 
-        # Флаг перемещения
+        self._movement_flags()
+
+    def _movement_flags(self):
+        """Флаги перемещения корабля."""
         self.moving_up = False
         self.moving_down = False
 

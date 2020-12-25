@@ -26,28 +26,34 @@ class TargetShooting:
         self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Target Shooting")
 
-        # Создание экземпляра для хранения игровой статистики.
-        self.stats = GameStats(self)
-        self.sb = Scoreboard(self)
-
-        # Создается экземпляр корабля, мишени и группа снарядов
-        self.ship = Ship(self)
-        self.target = Target(self)
-        self.bullets = pygame.sprite.Group()
-
-        # Создание кнопки Play.
-        self.play_button = Button(self, 'Play')
+        self._create_instances_and_groups()
 
     def run_game(self):
         """Запуск основного цикла игры."""
         while True:
             self._check_events()
+
             if self.stats.game_active:
                 self.ship.update()
                 self._update_bullets()
                 self._update_target()
 
             self._update_screen()
+
+    def _create_instances_and_groups(self):
+        """Создает экземпляры и группы объектов, необходимые для работы игры."""
+
+        # Экземпляры для хранения игровой статистики и панели результатов.
+        self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
+
+        # Экземпляры корабля, мишени и группы снарядов.
+        self.ship = Ship(self)
+        self.target = Target(self)
+        self.bullets = pygame.sprite.Group()
+
+        # Экземпляр кнопки Play.
+        self.play_button = Button(self, 'Play')
 
     def _check_events(self):
         """Обрабатывает нажатия клавиш и события мыши."""
@@ -67,11 +73,13 @@ class TargetShooting:
         """Запускает новую игру при нажатии кнопки Play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
-            # Сброс игровой статистики и начало новой.
             self._start_game()
 
     def _start_game(self):
-        """Сбрасывает статистику, начинает игру и скрывает курсор мыши."""
+        """
+        Сбрасывает статистику, начинает игру, подготавливает данные статистики и
+        скрывает курсор мыши.
+        """
         self.stats.reset_stats()
         self.stats.game_active = True
         self.sb.prep_images()
@@ -79,17 +87,18 @@ class TargetShooting:
 
     def _check_keydown_events(self, event):
         """Реагирует на нажатие клавиш."""
-        if event.key == pygame.K_UP:
-            self.ship.moving_up = True
-        elif event.key == pygame.K_DOWN:
-            self.ship.moving_down = True
-        elif event.key == pygame.K_q:
+        if self.stats.game_active:
+            if event.key == pygame.K_UP:
+                self.ship.moving_up = True
+            elif event.key == pygame.K_DOWN:
+                self.ship.moving_down = True
+            elif event.key == pygame.K_SPACE:
+                self._fire_bullet()
+        elif event.key == pygame.K_p:
+            self._start_game()
+        if event.key == pygame.K_q:
             self.sb.save_new_record()
             sys.exit()
-        elif event.key == pygame.K_p and not self.stats.game_active:
-            self._start_game()
-        elif event.key == pygame.K_SPACE and self.stats.game_active:
-            self._fire_bullet()
 
     def _check_keyup_events(self, event):
         """Реагирует на отпускание клавиш."""
@@ -115,6 +124,7 @@ class TargetShooting:
                 if not self.bullets and not self.stats.bullets_left:
                     sleep(0.8)
                     self._bullets_limit()
+
         self._check_bullet_target_collisions()
 
     def _update_target(self):
@@ -137,16 +147,21 @@ class TargetShooting:
 
     def _check_bullet_target_collisions(self):
         """Обнаружение коллизий снарядов с мишенью."""
-        if pygame.sprite.spritecollide(self.target, self.bullets, True):
+        collisions = pygame.sprite.spritecollide(self.target, self.bullets, True)
+        if collisions:
+            # Увеличивает расстояние от мишени
             self.target.increase_distance()
+
+            # Прибавляет снаряды к запасу
             self.stats.bullets_left += 3
+
+            # Увеличивает текущий счет
             self.stats.score += self.settings.target_points
             self.sb.prep_score()
             self.sb.check_high_score()
 
             # Меняет цвет мишени на случайное
             def r(): return random.randint(0, 255)
-
             self.target.color = r(), r(), r()
 
     def _bullets_limit(self):
@@ -155,19 +170,17 @@ class TargetShooting:
         self.ship.start_position_ship()
         self.target.start_position_target()
 
-        # Сброс игровых статистики и настроек.
-        self.stats.reset_stats()
+        # Сброс настроек.
         self.settings.initialize_dynamic_settings()
-
         pygame.mouse.set_visible(True)
 
     def _update_screen(self):
         """Обновляет изображения на экране и отображает новый экран."""
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
-        self.target.draw_target()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.target.draw_target()
 
         # Вывод информации о счете.
         self.sb.show_score()

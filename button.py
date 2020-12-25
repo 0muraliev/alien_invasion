@@ -1,16 +1,19 @@
 import pygame.font
 
+from settings import Settings
+
 
 class Button:
     """Инициализация атрибутов кнопки."""
 
     def __init__(self, ts_game, msg):
+        self.settings = Settings()
         self.screen = ts_game.screen
         self.screen_rect = self.screen.get_rect()
 
         # Назначение размеров и свойств кнопок.
-        self.width, self.height = 200, 50
-        self.button_color = (24, 32, 37)
+        self.width, self.height = 80, 50
+        self.button_color = self.settings.bg_color
         self.text_color = (255, 255, 255)
         self.font = pygame.font.SysFont(None, 58)
 

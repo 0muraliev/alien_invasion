@@ -23,4 +23,5 @@ class GameStats:
         """Получает возвращаемое значение рекорда."""
         with open('high_score.json') as f:
             self.high_score = json.load(f)
+
         return self.high_score
